@@ -32,6 +32,16 @@
             android:defaultValue="false"
             android:key="text_reflow"
             android:title="@string/reflow" />
+
+        <!-- ⭐⭐ 新增：翻页步长设置 ⭐⭐ -->
+        <SeekBarPreference
+            android:key="scroll_step_percent"
+            android:title="翻页步长（%）"
+            android:summary="每次翻页占屏幕的百分比"
+            android:defaultValue="90"
+            android:min="10"
+            android:max="100" />
+
         <Preference
             android:key="app_theme"
             android:title="@string/theme" />

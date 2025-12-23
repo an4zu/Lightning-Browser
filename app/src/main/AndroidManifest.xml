@@ -118,19 +118,21 @@
         <!-- FileProvider -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="acr.browser.barebones.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <!-- AndroidX 初始化 -->
+        <!-- AndroidX 初始化（已修复 authorities 冲突） -->
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="acr.browser.barebones.androidx-startup"
-            android:exported="false">
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:replace="android:authorities">
             <meta-data android:name="androidx.emoji2.text.EmojiCompatInitializer" android:value="androidx.startup" />
             <meta-data android:name="androidx.lifecycle.ProcessLifecycleInitializer" android:value="androidx.startup" />
             <meta-data android:name="okhttp3.internal.platform.PlatformInitializer" android:value="androidx.startup" />

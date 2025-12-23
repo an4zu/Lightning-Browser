@@ -5,25 +5,38 @@
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.AdBlockSettingsFragment"
         app:title="@string/settings_adblock" />
+
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.GeneralSettingsFragment"
         app:title="@string/settings_general" />
+
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.BookmarkSettingsFragment"
         app:title="@string/bookmark_settings" />
+
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.DisplaySettingsFragment"
         app:title="@string/settings_display" />
+
+    <!-- ⭐ 新增：悬浮翻页器设置入口 -->
+    <Preference
+        app:fragment="acr.browser.lightning.settings.FloatPagerSettingsFragment"
+        app:title="悬浮翻页器"
+        app:summary="配置悬浮翻页器的透明度、位置、尺寸等" />
+
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.PrivacySettingsFragment"
         app:title="@string/settings_privacy" />
+
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.AdvancedSettingsFragment"
         app:title="@string/settings_advanced" />
+
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.AboutSettingsFragment"
         app:summary="@string/settings_about_explain"
         app:title="@string/settings_about" />
+
     <Preference
         app:summary="@string/faq_description"
         app:title="@string/faq">
@@ -35,8 +48,10 @@
                 android:value="SELF" />
         </intent>
     </Preference>
+
     <Preference
         app:fragment="acr.browser.lightning.settings.fragment.DebugSettingsFragment"
         app:key="DEBUG"
         app:title="@string/debug_title" />
+
 </PreferenceScreen>

@@ -1,3 +1,4 @@
+import acr.browser.lightning.browser.floatpager.FloatPager
 package acr.browser.lightning.browser
 
 import acr.browser.lightning.AppTheme
@@ -101,6 +102,10 @@ abstract class BrowserActivity : ThemableBrowserActivity() {
     private var customView: View? = null
 
     private var pendingScroll = -1
+
+// 悬浮翻页器
+private var floatPager: FloatPager? = null
+
 
     @Suppress("ConvertLambdaToReference")
     private val launcher = registerForActivityResult(
@@ -885,4 +890,6 @@ abstract class BrowserActivity : ThemableBrowserActivity() {
             View.VISIBLE
         }
     }
+
+
 }

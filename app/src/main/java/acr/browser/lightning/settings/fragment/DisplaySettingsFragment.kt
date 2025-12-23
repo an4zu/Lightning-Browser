@@ -1,6 +1,3 @@
-/*
- * Copyright 2014 A.C.R. Development
- */
 package acr.browser.lightning.settings.fragment
 
 import acr.browser.lightning.AppTheme
@@ -10,6 +7,7 @@ import acr.browser.lightning.browser.ui.TabConfiguration
 import acr.browser.lightning.extensions.resizeAndShow
 import acr.browser.lightning.extensions.withSingleChoiceItems
 import acr.browser.lightning.preference.UserPreferences
+import acr.browser.lightning.display.ScrollPrefs
 import android.os.Bundle
 import android.view.Gravity
 import android.view.ViewGroup
@@ -18,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.preference.SeekBarPreference
 import javax.inject.Inject
 
 class DisplaySettingsFragment : AbstractSettingsFragment() {
@@ -89,6 +88,15 @@ class DisplaySettingsFragment : AbstractSettingsFragment() {
             isChecked = userPreferences.bookmarksAndTabsSwapped,
             onCheckChange = { userPreferences.bookmarksAndTabsSwapped = it }
         )
+
+        // ⭐⭐⭐ 新增：翻页步长（stepPercent）监听器 ⭐⭐⭐
+        val stepPref = findPreference<SeekBarPreference>("scroll_step_percent")
+        stepPref?.setOnPreferenceChangeListener { _, newValue ->
+            val percent = (newValue as Int) / 100f
+            val newCfg = ScrollPrefs.current().copy(stepPercent = percent)
+            ScrollPrefs.update(newCfg, requireContext())
+            true
+        }
     }
 
     private fun showTextSizePicker() {

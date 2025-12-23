@@ -1,3 +1,4 @@
+import acr.browser.lightning.browser.floatpager.FloatPager
 package acr.browser.lightning.browser
 
 import acr.browser.lightning.adblock.allowlist.AllowListModel
@@ -656,6 +657,9 @@ class BrowserPresenter @Inject constructor(
     }
 
     private fun reload() {
+        // 悬浮翻页器：刷新时重置位置
+(view as? BrowserActivity)?.floatPager?.resetPositionOnRefresh()
+
         val currentUrl = currentTab?.url
         if (currentUrl?.isSpecialUrl() == true) {
             when {

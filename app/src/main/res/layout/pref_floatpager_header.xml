@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="悬浮翻页器说明：\n\n• 拖动保存位置\n• 刷新重置位置\n• 临时透明度不跨页面\n• 长按关闭标签\n• 按钮尺寸可调\n• 默认位置可配置"
+        android:textSize="14sp" />
+</com.google.android.material.card.MaterialCardView>

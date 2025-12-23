@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ========================= -->
+    <!-- 悬浮翻页器总开关 + 说明 -->
+    <!-- ========================= -->
+    <PreferenceCategory android:title="悬浮翻页器 FloatPager">
+
+        <SwitchPreference
+            android:key="floatpager_enabled"
+            android:title="启用悬浮翻页器"
+            android:defaultValue="true" />
+
+        <Preference
+            android:title="说明"
+            android:summary="悬浮翻页器支持：拖动保存位置、刷新重置、透明度切换、长按关闭标签、跨页面继承位置等功能。" />
+
+        <!-- ⭐ 新增：重置位置 -->
+        <Preference
+            android:key="floatpager_reset_position"
+            android:title="重置位置"
+            android:summary="清除保存的位置并恢复到默认位置（刷新页面后生效）" />
+
+        <!-- ⭐ 新增：恢复默认设置 -->
+        <Preference
+            android:key="floatpager_restore_defaults"
+            android:title="恢复默认设置"
+            android:summary="将所有悬浮翻页器设置恢复为默认值" />
+
+    </PreferenceCategory>
+
+    <!-- ========================= -->
+    <!-- 透明度设置 -->
+    <!-- ========================= -->
+    <PreferenceCategory android:title="透明度">
+
+        <SeekBarPreference
+            android:key="floatpager_opacity"
+            android:title="默认透明度"
+            android:min="10"
+            android:max="100"
+            android:defaultValue="40" />
+
+        <SeekBarPreference
+            android:key="floatpager_hide_opacity"
+            android:title="临时变淡透明度"
+            android:min="5"
+            android:max="50"
+            android:defaultValue="10" />
+
+    </PreferenceCategory>
+
+    <!-- ========================= -->
+    <!-- 按钮尺寸 -->
+    <!-- ========================= -->
+    <PreferenceCategory android:title="按钮尺寸">
+
+        <SeekBarPreference
+            android:key="floatpager_main_size"
+            android:title="主按钮尺寸（dp）"
+            android:min="16"
+            android:max="96"
+            android:defaultValue="48" />
+
+    </PreferenceCategory>
+
+    <!-- ========================= -->
+    <!-- 默认位置 -->
+    <!-- ========================= -->
+    <PreferenceCategory android:title="默认位置">
+
+        <SeekBarPreference
+            android:key="floatpager_default_x"
+            android:title="默认 X 位置"
+            android:min="0"
+            android:max="2000"
+            android:defaultValue="-1" />
+
+        <SeekBarPreference
+            android:key="floatpager_default_y"
+            android:title="默认 Y 位置"
+            android:min="0"
+            android:max="2000"
+            android:defaultValue="-1" />
+
+        <SeekBarPreference
+            android:key="floatpager_default_offset"
+            android:title="默认偏移量（dp）"
+            android:min="-300"
+            android:max="300"
+            android:defaultValue="-120" />
+
+    </PreferenceCategory>
+
+    <!-- ========================= -->
+    <!-- 长按关闭 -->
+    <!-- ========================= -->
+    <PreferenceCategory android:title="长按关闭">
+
+        <SeekBarPreference
+            android:key="floatpager_long_press"
+            android:title="长按关闭时间（毫秒）"
+            android:min="10"
+            android:max="1500"
+            android:defaultValue="600" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
