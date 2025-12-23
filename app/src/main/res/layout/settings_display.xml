@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 字体大小 -->
+        <TextView
+            android:text="字体大小"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/fontSizeSeek"
+            android:max="40"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 最小字体 -->
+        <TextView
+            android:text="最小字体"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/minFontSizeSeek"
+            android:max="30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 加粗 -->
+        <Switch
+            android:id="@+id/switchFakeBold"
+            android:text="加粗（600）"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 加黑 -->
+        <Switch
+            android:id="@+id/switchHeavyBold"
+            android:text="加黑（900）"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 防毛刺 -->
+        <Switch
+            android:id="@+id/switchEnhanceEdges"
+            android:text="防毛刺（抗锯齿）"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 滚动模式 -->
+        <TextView
+            android:text="滚动模式"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp" />
+
+        <RadioGroup
+            android:id="@+id/scrollModeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/scrollContentRatio"
+                android:text="原始比例（网页模式）"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/scrollViewportRatio"
+                android:text="视口比例（阅读模式）"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
+    </LinearLayout>
+</ScrollView>
