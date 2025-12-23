@@ -11,16 +11,25 @@ plugins {
 }
 
 android {
+    namespace = "acr.browser.lightning"
     compileSdk = 36
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 29   // Android 10 完全兼容
+        targetSdk = 29
         versionName = "5.1.0"
         vectorDrawables.useSupportLibrary = true
-
-        // Android 10 文件访问兼容
         manifestPlaceholders["requestLegacyExternalStorage"] = "true"
+    }
+
+    // ⭐ 自动签名配置（最省心）
+    signingConfigs {
+        create("release") {
+            storeFile = file("release.keystore")
+            storePassword = "123456"
+            keyAlias = "release"
+            keyPassword = "123456"
+        }
     }
 
     val isCi = System.getenv("CI") == "true"
@@ -46,24 +55,19 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             setProguardFiles(listOf("proguard-project.txt"))
-            enableUnitTestCoverage = false
-            enableAndroidTestCoverage = false
         }
 
         named("release") {
             multiDexEnabled = false
-            isMinifyEnabled = !isCi
-            isShrinkResources = !isCi
-            setProguardFiles(listOf("proguard-project.txt"))
-            enableUnitTestCoverage = false
-            enableAndroidTestCoverage = false
 
-            ndk {
-                abiFilters.add("arm64-v8a")
-                abiFilters.add("armeabi-v7a")
-                abiFilters.add("armeabi")
-                abiFilters.add("mips")
-            }
+            // ⭐ 关闭混淆（避免 APK 被破坏）
+            isMinifyEnabled = false
+            isShrinkResources = false
+
+            setProguardFiles(listOf("proguard-project.txt"))
+
+            // ⭐ 自动签名（关键）
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -72,7 +76,7 @@ android {
     productFlavors {
         create("lightningPlus") {
             dimension = "capabilities"
-            buildConfigField("boolean", "FULL_VERSION", "Boolean.parseBoolean(\"true\")")
+            buildConfigField("boolean", "FULL_VERSION", "true")
             applicationId = "acr.browser.lightning"
             versionCode = 101
         }
@@ -80,7 +84,7 @@ android {
         if (!isCi) {
             create("lightningLite") {
                 dimension = "capabilities"
-                buildConfigField("boolean", "FULL_VERSION", "Boolean.parseBoolean(\"false\")")
+                buildConfigField("boolean", "FULL_VERSION", "false")
                 applicationId = "acr.browser.barebones"
                 versionCode = 102
             }
@@ -88,24 +92,19 @@ android {
     }
 
     packaging {
-        resources {
-            excludes += listOf(".readme")
-        }
+        resources.excludes += listOf(".readme")
     }
 
+    // ⭐ 关闭 LintVital（避免 release 构建失败）
     lint {
         abortOnError = false
         checkReleaseBuilds = false
     }
-
-    namespace = "acr.browser.lightning"
 }
 
 dependencies {
-    // multidex debug
     debugImplementation("androidx.multidex:multidex:2.0.1")
 
-    // test dependencies
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.assertj:assertj-core:3.27.6")
     testImplementation("org.mockito:mockito-core:5.21.0")
@@ -114,7 +113,6 @@ dependencies {
     }
     testImplementation("org.robolectric:robolectric:4.16")
 
-    // support libraries
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
@@ -128,21 +126,17 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.webkit:webkit:1.14.0")
 
-    // html parsing for reading mode
     implementation("org.jsoup:jsoup:1.21.2")
 
-    // file reading
     val mezzanineVersion = "2.2.0"
     implementation("com.anthonycr.mezzanine:core:$mezzanineVersion")
     ksp("com.anthonycr.mezzanine:processor:$mezzanineVersion")
 
-    // dependency injection
     val daggerVersion = "2.57.2"
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
     compileOnly("javax.annotation:jsr250-api:1.0")
 
-    // permissions
     implementation("com.guolindev.permissionx:permissionx:1.8.1")
 
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
@@ -150,15 +144,12 @@ dependencies {
     implementation("io.coil-kt.coil3:coil:3.3.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
 
-    // rx
     implementation("io.reactivex.rxjava3:rxjava:3.1.12")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
 
-    // memory leak analysis
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 
-    // kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.21")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
