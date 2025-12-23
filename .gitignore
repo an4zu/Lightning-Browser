@@ -52,3 +52,7 @@ out
 # https://gitlab.com/fdroid/fdroidclient/raw/master/.gitignore
 
 *.iml
+check_env.sh
+fix_jdk.sh
+init.sh
+keyboard_restore_fix.patch
