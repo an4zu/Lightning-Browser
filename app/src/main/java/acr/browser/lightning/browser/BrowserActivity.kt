@@ -144,6 +144,22 @@ abstract class BrowserActivity : ThemableBrowserActivity() {
     @Inject
     internal lateinit var mainHandler: Handler
 
+        // 用于避免某些情况下不必要的 freeze（例如键盘相关的伪暂停）
+    private var keyboardPause: Boolean = false
+
+    private fun isKeyboardVisible(): Boolean {
+        val rootView = window.decorView.rootView
+        val screenHeight = rootView.height
+        val visibleFrame = android.graphics.Rect()
+        rootView.getWindowVisibleDisplayFrame(visibleFrame)
+        val visibleHeight = visibleFrame.height()
+        val heightDiff = screenHeight - visibleHeight
+
+        // 这里 100dp 作为阈值，避免小幅度布局变化误判为键盘
+        val thresholdPx = (resources.displayMetrics.density * 100).toInt()
+        return heightDiff > thresholdPx
+    }
+
     /**
      * True if the activity is operating in incognito mode, false otherwise.
      */
@@ -376,9 +392,19 @@ abstract class BrowserActivity : ThemableBrowserActivity() {
     }
 
     override fun onPause() {
-        super.onPause()
-        presenter.onViewHidden()
+    // 在 super.onPause() 之前记录键盘状态，避免生命周期后视图度量发生变化
+    keyboardPause = isKeyboardVisible()
+
+    super.onPause()
+
+    // 如果是“键盘导致的伪暂停”，跳过 freeze
+    if (keyboardPause) {
+        return
     }
+
+    presenter.onViewHidden()
+}
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(menu(), menu)
