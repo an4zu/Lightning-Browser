@@ -1,8 +1,8 @@
 package acr.browser.lightning.browser.tab
+
 import acr.browser.lightning.display.FontEngine
 import acr.browser.lightning.display.ReflowEngine
 import acr.browser.lightning.display.ScrollPrefs
-
 
 import acr.browser.lightning.Capabilities
 import acr.browser.lightning.browser.di.IncognitoMode
@@ -19,6 +19,7 @@ import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import javax.inject.Inject
+
 
 /**
  * Constructs [WebView] instances configured for the browser based on user's preferences and create
@@ -63,6 +64,15 @@ class WebViewFactory @Inject constructor(
      * Construct a [WebView] based on the user's preferences.
      */
     fun createWebView(): WebView = WebView(activity).apply {
+        // 字体系统（字体大小、加粗、加黑、防毛刺）
+FontEngine.applyToWebView(this)
+
+// 可选：强制重排（避免缩放后布局不刷新）
+ReflowEngine.forceReflow(this)
+
+// 滚动配置（加载当前模式）
+val scrollCfg = ScrollPrefs.current()
+
         tag = CompositeTouchListener().also(::setOnTouchListener)
         isFocusableInTouchMode = true
         isFocusable = true
