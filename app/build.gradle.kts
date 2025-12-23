@@ -15,9 +15,12 @@ android {
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 29   // Android 10 完全兼容
         versionName = "5.1.0"
         vectorDrawables.useSupportLibrary = true
+
+        // Android 10 文件访问兼容
+        manifestPlaceholders["requestLegacyExternalStorage"] = "true"
     }
 
     val isCi = System.getenv("CI") == "true"
@@ -83,14 +86,17 @@ android {
             }
         }
     }
+
     packaging {
         resources {
             excludes += listOf(".readme")
         }
     }
+
     lint {
         abortOnError = true
     }
+
     namespace = "acr.browser.lightning"
 }
 
