@@ -1,7 +1,6 @@
 package acr.browser.lightning.display
 
 import android.content.Context
-import android.webkit.WebSettings
 import android.webkit.WebView
 
 data class FontConfig(
@@ -10,6 +9,7 @@ data class FontConfig(
     val textZoom: Int = 100,
     val fontFamily: String = "sans-serif",
     val fakeBold: Boolean = false,      // 加粗
+    val heavyBold: Boolean = false,     // 加黑（更粗）
     val enhanceEdges: Boolean = false   // 防毛刺
 )
 
@@ -26,6 +26,7 @@ object FontEngine {
             textZoom = sp.getInt("textZoom", 100),
             fontFamily = sp.getString("fontFamily", "sans-serif") ?: "sans-serif",
             fakeBold = sp.getBoolean("fakeBold", false),
+            heavyBold = sp.getBoolean("heavyBold", false),
             enhanceEdges = sp.getBoolean("enhanceEdges", false)
         )
     }
@@ -38,6 +39,7 @@ object FontEngine {
             .putInt("textZoom", config.textZoom)
             .putString("fontFamily", config.fontFamily)
             .putBoolean("fakeBold", config.fakeBold)
+            .putBoolean("heavyBold", config.heavyBold)
             .putBoolean("enhanceEdges", config.enhanceEdges)
             .apply()
     }
@@ -57,6 +59,14 @@ object FontEngine {
         if (config.fakeBold) {
             webView.evaluateJavascript(
                 "document.body.style.fontWeight='600';",
+                null
+            )
+        }
+
+        // 加黑（Heavy Bold）
+        if (config.heavyBold) {
+            webView.evaluateJavascript(
+                "document.body.style.fontWeight='900';",
                 null
             )
         }
