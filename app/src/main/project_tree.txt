@@ -1,0 +1,535 @@
+.
+├── AndroidManifest.xml
+├── assets
+│   ├── ask.png
+│   ├── baidu.png
+│   ├── bing.png
+│   ├── duckduckgo.png
+│   ├── google.png
+│   ├── hosts.txt
+│   ├── lightning.png
+│   ├── naver.png
+│   ├── startpage.png
+│   ├── yahoo.png
+│   └── yandex.png
+├── full_tree.txt
+├── html
+│   ├── bookmarks.html
+│   ├── homepage.html
+│   └── list.html
+├── java
+│   └── acr
+│       └── browser
+│           └── lightning
+│               ├── adblock
+│               │   ├── AdBlocker.kt
+│               │   ├── allowlist
+│               │   │   ├── AllowListModel.kt
+│               │   │   └── SessionAllowListModel.kt
+│               │   ├── BloomFilterAdBlocker.kt
+│               │   ├── NoOpAdBlocker.kt
+│               │   ├── parser
+│               │   │   └── HostsFileParser.kt
+│               │   ├── source
+│               │   │   ├── AssetsHostsDataSource.kt
+│               │   │   ├── FileHostsDataSource.kt
+│               │   │   ├── HostsDataSource.kt
+│               │   │   ├── HostsDataSourceProvider.kt
+│               │   │   ├── HostsResult.kt
+│               │   │   ├── HostsSourceType.kt
+│               │   │   ├── PreferencesHostsDataSourceProvider.kt
+│               │   │   └── UrlHostsDataSource.kt
+│               │   └── util
+│               │       ├── BloomFilter.kt
+│               │       ├── DefaultBloomFilter.kt
+│               │       ├── DelegatingBloomFilter.kt
+│               │       ├── hash
+│               │       │   ├── FileHash.kt
+│               │       │   ├── HashingAlgorithm.kt
+│               │       │   ├── MurmurHashHostAdapter.kt
+│               │       │   ├── MurmurHash.java
+│               │       │   └── MurmurHashStringAdapter.kt
+│               │       ├── integer
+│               │       │   └── IntExtensions.kt
+│               │       └── object
+│               │           ├── JvmObjectStore.kt
+│               │           └── ObjectStore.kt
+│               ├── animation
+│               │   └── AnimationUtils.kt
+│               ├── AppTheme.kt
+│               ├── bookmark
+│               │   ├── BookmarkImporter.kt
+│               │   ├── LegacyBookmarkImporter.kt
+│               │   └── NetscapeBookmarkFormatImporter.kt
+│               ├── browser
+│               │   ├── bookmark
+│               │   │   ├── BookmarkRecyclerViewAdapter.kt
+│               │   │   └── BookmarkViewHolder.kt
+│               │   ├── BrowserActivity.kt
+│               │   ├── BrowserContract.kt
+│               │   ├── BrowserNavigator.kt
+│               │   ├── BrowserPresenter.kt
+│               │   ├── BrowserStateAdapter.kt
+│               │   ├── BrowserViewState.kt
+│               │   ├── cleanup
+│               │   │   ├── BasicIncognitoExitCleanup.kt
+│               │   │   ├── DelegatingExitCleanup.kt
+│               │   │   ├── EnhancedIncognitoExitCleanup.kt
+│               │   │   ├── ExitCleanup.kt
+│               │   │   └── NormalExitCleanup.kt
+│               │   ├── color
+│               │   │   └── ColorAnimator.kt
+│               │   ├── data
+│               │   │   ├── CookieAdministrator.kt
+│               │   │   ├── DefaultCookieAdministrator.kt
+│               │   │   └── IncognitoCookieAdministrator.kt
+│               │   ├── di
+│               │   │   ├── AppBindsModule.kt
+│               │   │   ├── AppComponent.kt
+│               │   │   ├── AppModule.kt
+│               │   │   ├── Browser2BindsModule.kt
+│               │   │   ├── Browser2Component.kt
+│               │   │   ├── Browser2Module.kt
+│               │   │   ├── Browser2Scope.kt
+│               │   │   └── DiExtensions.kt
+│               │   ├── download
+│               │   │   ├── DownloadPermissionsHelper.kt
+│               │   │   └── PendingDownload.kt
+│               │   ├── history
+│               │   │   ├── DefaultHistoryRecord.kt
+│               │   │   ├── HistoryRecord.kt
+│               │   │   └── NoOpHistoryRecord.kt
+│               │   ├── image
+│               │   │   ├── FaviconImageLoader.kt
+│               │   │   ├── IconFreeze.kt
+│               │   │   └── ImageLoader.kt
+│               │   ├── keys
+│               │   │   ├── KeyCombo.kt
+│               │   │   └── KeyEventAdapter.kt
+│               │   ├── menu
+│               │   │   ├── MenuItemAdapter.kt
+│               │   │   └── MenuSelection.kt
+│               │   ├── notification
+│               │   │   ├── DefaultTabCountNotifier.kt
+│               │   │   ├── IncognitoNotification.kt
+│               │   │   ├── IncognitoTabCountNotifier.kt
+│               │   │   └── TabCountNotifier.kt
+│               │   ├── proxy
+│               │   │   ├── ProxyAdapter.kt
+│               │   │   └── ProxyChoice.kt
+│               │   ├── search
+│               │   │   ├── IntentExtractor.kt
+│               │   │   ├── SearchBoxDisplayChoice.kt
+│               │   │   ├── SearchBoxModel.kt
+│               │   │   ├── SearchListener.kt
+│               │   │   └── StyleRemovingTextWatcher.kt
+│               │   ├── tab
+│               │   │   ├── BottomDrawerTabRecyclerViewAdapter.kt
+│               │   │   ├── bundle
+│               │   │   │   ├── BundleStore.kt
+│               │   │   │   ├── DefaultBundleStore.kt
+│               │   │   │   └── IncognitoBundleStore.kt
+│               │   │   ├── DefaultTabTitle.kt
+│               │   │   ├── DefaultUserAgent.kt
+│               │   │   ├── DesktopTabRecyclerViewAdapter.kt
+│               │   │   ├── DrawerTabRecyclerViewAdapter.kt
+│               │   │   ├── RecentTabModel.kt
+│               │   │   ├── TabAdapter.kt
+│               │   │   ├── TabFactory.kt
+│               │   │   ├── TabInitializer.kt
+│               │   │   ├── TabModel.kt
+│               │   │   ├── TabPager.kt
+│               │   │   ├── TabsRepository.kt
+│               │   │   ├── TabViewHolder.kt
+│               │   │   ├── TabViewState.kt
+│               │   │   ├── TabWebChromeClient.kt
+│               │   │   ├── TabWebViewClient.kt
+│               │   │   ├── UrlHandler.kt
+│               │   │   ├── view
+│               │   │   │   └── BackgroundDrawable.kt
+│               │   │   └── WebViewFactory.kt
+│               │   ├── theme
+│               │   │   ├── DefaultThemeProvider.kt
+│               │   │   └── ThemeProvider.kt
+│               │   ├── ui
+│               │   │   ├── BookmarkConfiguration.kt
+│               │   │   ├── TabConfiguration.kt
+│               │   │   └── UiConfiguration.kt
+│               │   ├── view
+│               │   │   ├── CompositeTouchListener.kt
+│               │   │   ├── delegates
+│               │   │   │   ├── BottomTabViewDelegate.kt
+│               │   │   │   ├── DesktopTabViewDelegate.kt
+│               │   │   │   └── DrawerTabViewDelegate.kt
+│               │   │   ├── RenderingMode.kt
+│               │   │   ├── targetUrl
+│               │   │   │   └── LongPress.kt
+│               │   │   ├── ViewDelegate.kt
+│               │   │   ├── WebViewCompositeTouchExtensions.kt
+│               │   │   ├── WebViewLongPressHandler.kt
+│               │   │   └── WebViewScrollCoordinator.kt
+│               │   └── webrtc
+│               │       ├── WebRtcPermissionsModel.kt
+│               │       └── WebRtcPermissionsView.kt
+│               ├── BrowserApp.kt
+│               ├── Capabilities.kt
+│               ├── constant
+│               │   └── Constants.kt
+│               ├── database
+│               │   ├── adblock
+│               │   │   ├── Host.kt
+│               │   │   ├── HostsDatabase.kt
+│               │   │   ├── HostsRepositoryInfo.kt
+│               │   │   ├── HostsRepository.kt
+│               │   │   └── InMemoryHostsRepository.kt
+│               │   ├── allowlist
+│               │   │   ├── AdBlockAllowListDatabase.kt
+│               │   │   ├── AdBlockAllowListRepository.kt
+│               │   │   └── AllowListEntry.kt
+│               │   ├── bookmark
+│               │   │   ├── BookmarkDatabase.kt
+│               │   │   ├── BookmarkExporter.java
+│               │   │   └── BookmarkRepository.kt
+│               │   ├── DatabaseDelegate.kt
+│               │   ├── downloads
+│               │   │   ├── DownloadEntry.kt
+│               │   │   ├── DownloadsDatabase.kt
+│               │   │   └── DownloadsRepository.kt
+│               │   ├── history
+│               │   │   ├── HistoryDatabase.kt
+│               │   │   └── HistoryRepository.kt
+│               │   └── WebPage.kt
+│               ├── DefaultBrowserActivity.kt
+│               ├── device
+│               │   ├── BuildInfo.kt
+│               │   └── ScreenSize.kt
+│               ├── dialog
+│               │   ├── BrowserDialog.kt
+│               │   ├── DialogItem.kt
+│               │   └── LightningDialogBuilder.kt
+│               ├── download
+│               │   ├── DownloadHandler.java
+│               │   ├── FetchUrlMimeType.java
+│               │   └── WebAddress.java
+│               ├── extensions
+│               │   ├── ActivityExtensions.kt
+│               │   ├── AlertDialogExtensions.kt
+│               │   ├── BitmapExtensions.kt
+│               │   ├── CanvasExtensions.kt
+│               │   ├── ClipboardManagerExtensions.kt
+│               │   ├── CloseableExtensions.kt
+│               │   ├── ContextExtensions.kt
+│               │   ├── CursorExtensions.kt
+│               │   ├── DrawableExtensions.kt
+│               │   ├── Extensions.kt
+│               │   ├── JSONArrayExtensions.kt
+│               │   ├── ObservableExtensions.kt
+│               │   ├── PermissionRequestExtensions.kt
+│               │   ├── StackExtensions.kt
+│               │   ├── StringBuilderExtensions.kt
+│               │   └── ViewExtensions.kt
+│               ├── favicon
+│               │   ├── FaviconCleanup.kt
+│               │   ├── FaviconModel.kt
+│               │   └── UriExtensions.kt
+│               ├── html
+│               │   ├── bookmark
+│               │   │   ├── BookmarkCleanup.kt
+│               │   │   ├── BookmarkPageFactory.kt
+│               │   │   ├── BookmarkPageReader.kt
+│               │   │   └── BookmarkViewModel.kt
+│               │   ├── download
+│               │   │   ├── DownloadCleanup.kt
+│               │   │   └── DownloadPageFactory.kt
+│               │   ├── history
+│               │   │   ├── HistoryCleanup.kt
+│               │   │   └── HistoryPageFactory.kt
+│               │   ├── homepage
+│               │   │   ├── HomeCleanup.kt
+│               │   │   ├── HomePageFactory.kt
+│               │   │   └── HomePageReader.kt
+│               │   ├── HtmlPageFactory.kt
+│               │   ├── jsoup
+│               │   │   └── JsoupExtensions.kt
+│               │   └── ListPageReader.kt
+│               ├── icon
+│               │   └── TabCountView.kt
+│               ├── ids
+│               │   └── ViewIdGenerator.kt
+│               ├── IncognitoBrowserActivity.kt
+│               ├── interpolator
+│               │   └── BezierDecelerateInterpolator.kt
+│               ├── js
+│               │   ├── InvertPage.kt
+│               │   ├── TextReflow.kt
+│               │   └── ThemeColor.kt
+│               ├── list
+│               │   ├── RecyclerViewDialogItemAdapter.kt
+│               │   └── RecyclerViewStringAdapter.kt
+│               ├── log
+│               │   ├── AndroidLogger.kt
+│               │   ├── Logger.kt
+│               │   └── NoOpLogger.kt
+│               ├── migration
+│               │   └── Cleanup.kt
+│               ├── network
+│               │   └── NetworkConnectivityModel.kt
+│               ├── preference
+│               │   ├── delegates
+│               │   │   ├── BooleanPreference.kt
+│               │   │   ├── EnumPreference.kt
+│               │   │   ├── IntPreference.kt
+│               │   │   ├── NullableStringPreference.kt
+│               │   │   └── StringPreference.kt
+│               │   ├── DeveloperPreferences.kt
+│               │   ├── IntEnum.kt
+│               │   ├── UserPreferencesExtensions.kt
+│               │   └── UserPreferences.kt
+│               ├── preview
+│               │   └── PreviewModel.kt
+│               ├── rx
+│               │   ├── BroadcastReceiverDisposable.kt
+│               │   ├── BroadcastReceiverObservable.kt
+│               │   └── RxExtensions.kt
+│               ├── search
+│               │   ├── engine
+│               │   │   ├── AskSearch.kt
+│               │   │   ├── BaiduSearch.kt
+│               │   │   ├── BaseSearchEngine.kt
+│               │   │   ├── BingSearch.kt
+│               │   │   ├── CustomSearch.kt
+│               │   │   ├── DuckLiteSearch.kt
+│               │   │   ├── DuckSearch.kt
+│               │   │   ├── GoogleSearch.kt
+│               │   │   ├── NaverSearch.kt
+│               │   │   ├── StartPageMobileSearch.kt
+│               │   │   ├── StartPageSearch.kt
+│               │   │   ├── YahooSearch.kt
+│               │   │   └── YandexSearch.kt
+│               │   ├── SearchEngineProvider.kt
+│               │   ├── SearchView.kt
+│               │   ├── suggestions
+│               │   │   ├── BaiduSuggestionsModel.kt
+│               │   │   ├── BaseSuggestionsModel.kt
+│               │   │   ├── DuckSuggestionsModel.kt
+│               │   │   ├── GoogleSuggestionsModel.kt
+│               │   │   ├── NaverSuggestionsModel.kt
+│               │   │   ├── NoOpSuggestionsRepository.kt
+│               │   │   ├── RequestFactory.kt
+│               │   │   └── SuggestionsRepository.kt
+│               │   ├── SuggestionsAdapter.kt
+│               │   ├── Suggestions.kt
+│               │   └── SuggestionViewHolder.kt
+│               ├── settings
+│               │   ├── activity
+│               │   │   ├── SettingsActivity.kt
+│               │   │   └── ThemableSettingsActivity.kt
+│               │   └── fragment
+│               │       ├── AboutSettingsFragment.kt
+│               │       ├── AbstractSettingsFragment.kt
+│               │       ├── AdBlockSettingsFragment.kt
+│               │       ├── AdvancedSettingsFragment.kt
+│               │       ├── BookmarkSettingsFragment.kt
+│               │       ├── DebugSettingsFragment.kt
+│               │       ├── DisplaySettingsFragment.kt
+│               │       ├── GeneralSettingsFragment.kt
+│               │       ├── PrivacySettingsFragment.kt
+│               │       ├── RootSettingsFragment.kt
+│               │       └── SummaryUpdater.kt
+│               ├── ssl
+│               │   ├── SessionSslWarningPreferences.kt
+│               │   ├── SslCertificateInfo.kt
+│               │   ├── SslDialog.kt
+│               │   ├── SslIcon.kt
+│               │   ├── SslState.kt
+│               │   └── SslWarningPreferences.kt
+│               ├── ThemableBrowserActivity.kt
+│               └── utils
+│                   ├── DeviceUtils.kt
+│                   ├── DrawableUtils.java
+│                   ├── FileUtils.java
+│                   ├── IntentUtils.java
+│                   ├── Option.kt
+│                   ├── Preconditions.java
+│                   ├── ProxyUtils.java
+│                   ├── ThemeUtils.java
+│                   ├── ThreadSafeFileProvider.kt
+│                   ├── UrlUtils.kt
+│                   ├── Utils.java
+│                   └── WebUtils.java
+├── js
+│   ├── InvertPage.js
+│   ├── TextReflow.js
+│   └── ThemeColor.js
+├── project_tree.txt
+└── res
+    ├── anim
+    │   ├── bezier_decelerate.xml
+    │   ├── fade_in_scale.xml
+    │   ├── fade_out_scale.xml
+    │   ├── slide_in_from_right.xml
+    │   └── slide_out_to_right.xml
+    ├── color
+    │   ├── state_color_icons_dark.xml
+    │   └── state_color_icons_light.xml
+    ├── drawable
+    │   ├── card_bg_elevate.xml
+    │   ├── card_bg.xml
+    │   ├── ic_action_back.xml
+    │   ├── ic_action_collapse.xml
+    │   ├── ic_action_delete.xml
+    │   ├── ic_action_desktop.xml
+    │   ├── ic_action_expand.xml
+    │   ├── ic_action_forward.xml
+    │   ├── ic_action_home.xml
+    │   ├── ic_action_invert.xml
+    │   ├── ic_action_plus.xml
+    │   ├── ic_action_refresh.xml
+    │   ├── ic_action_star.xml
+    │   ├── ic_action_tabs.xml
+    │   ├── ic_action_text_size.xml
+    │   ├── ic_block.xml
+    │   ├── ic_bookmark.xml
+    │   ├── ic_folder.xml
+    │   ├── ic_frozen.xml
+    │   ├── ic_history.xml
+    │   ├── ic_insert.xml
+    │   ├── ic_page_tools.xml
+    │   ├── ic_search.xml
+    │   ├── ic_secured.xml
+    │   ├── ic_unsecured.xml
+    │   ├── ic_webpage.xml
+    │   ├── incognito_mode.xml
+    │   ├── list_bg.xml
+    │   ├── state_ic_bookmark.xml
+    │   ├── tab_background_selected.xml
+    │   ├── tab_background.xml
+    │   ├── toolbar_elevate_black.xml
+    │   ├── toolbar_elevate_dark.xml
+    │   └── toolbar_elevate.xml
+    ├── drawable-hdpi
+    │   └── ic_notification_incognito.png
+    ├── drawable-mdpi
+    │   └── ic_notification_incognito.png
+    ├── drawable-xhdpi
+    │   └── ic_notification_incognito.png
+    ├── drawable-xxhdpi
+    │   └── ic_notification_incognito.png
+    ├── layout
+    │   ├── bookmark_list_item.xml
+    │   ├── browser_activity_bottom.xml
+    │   ├── browser_activity_desktop.xml
+    │   ├── browser_activity_drawer.xml
+    │   ├── browser_bottom_tabs.xml
+    │   ├── dialog_auth_request.xml
+    │   ├── dialog_edit_bookmark.xml
+    │   ├── dialog_edit_text.xml
+    │   ├── dialog_list_item.xml
+    │   ├── dialog_manual_proxy.xml
+    │   ├── dialog_seek_bar.xml
+    │   ├── dialog_ssl_info.xml
+    │   ├── dialog_ssl_warning.xml
+    │   ├── list_dialog.xml
+    │   ├── reading_view.xml
+    │   ├── settings_root.xml
+    │   ├── simple_list_item.xml
+    │   ├── tab_list_item_horizontal.xml
+    │   ├── tab_list_item.xml
+    │   ├── tab_preview_item.xml
+    │   └── two_line_autocomplete.xml
+    ├── menu
+    │   ├── incognito.xml
+    │   ├── main.xml
+    │   └── reading.xml
+    ├── menu-large
+    │   ├── incognito.xml
+    │   └── main.xml
+    ├── menu-xlarge
+    │   ├── incognito.xml
+    │   └── main.xml
+    ├── mipmap-anydpi
+    │   ├── ic_launcher_round.xml
+    │   └── ic_launcher.xml
+    ├── mipmap-hdpi
+    │   ├── ic_launcher_background.png
+    │   ├── ic_launcher_foreground.png
+    │   └── ic_launcher.png
+    ├── mipmap-xhdpi
+    │   ├── ic_launcher_background.png
+    │   ├── ic_launcher_foreground.png
+    │   └── ic_launcher.png
+    ├── mipmap-xxhdpi
+    │   ├── ic_launcher_background.png
+    │   ├── ic_launcher_foreground.png
+    │   └── ic_launcher.png
+    ├── mipmap-xxxhdpi
+    │   ├── ic_launcher_background.png
+    │   ├── ic_launcher_foreground.png
+    │   └── ic_launcher.png
+    ├── raw
+    │   └── default_bookmarks.dat
+    ├── values
+    │   ├── arrays.xml
+    │   ├── attr.xml
+    │   ├── colors.xml
+    │   ├── dimens.xml
+    │   ├── integers.xml
+    │   ├── strings.xml
+    │   └── styles.xml
+    ├── values-ar
+    │   └── strings.xml
+    ├── values-de
+    │   └── strings.xml
+    ├── values-el
+    │   └── strings.xml
+    ├── values-es
+    │   └── strings.xml
+    ├── values-fr
+    │   └── strings.xml
+    ├── values-hu
+    │   └── strings.xml
+    ├── values-it
+    │   └── strings.xml
+    ├── values-iw
+    │   └── strings.xml
+    ├── values-ja
+    │   └── strings.xml
+    ├── values-ko
+    │   └── strings.xml
+    ├── values-lt
+    │   └── strings.xml
+    ├── values-nl
+    │   └── strings.xml
+    ├── values-pl
+    │   └── strings.xml
+    ├── values-pt
+    │   └── strings.xml
+    ├── values-pt-rBR
+    │   └── strings.xml
+    ├── values-ru
+    │   └── strings.xml
+    ├── values-sr
+    │   └── strings.xml
+    ├── values-tr
+    │   └── strings.xml
+    ├── values-v21
+    │   └── styles.xml
+    ├── values-xlarge
+    │   └── dimens.xml
+    ├── values-zh-rCN
+    │   └── strings.xml
+    ├── values-zh-rTW
+    │   └── strings.xml
+    └── xml
+        ├── filepaths.xml
+        ├── preference_about.xml
+        ├── preference_ad_block.xml
+        ├── preference_advanced.xml
+        ├── preference_bookmarks.xml
+        ├── preference_debug.xml
+        ├── preference_display.xml
+        ├── preference_general.xml
+        ├── preference_privacy.xml
+        └── preference_root.xml
+
+120 directories, 412 files

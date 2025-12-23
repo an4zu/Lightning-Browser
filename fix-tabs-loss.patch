@@ -1,0 +1,31 @@
+diff --git a/app/src/main/java/acr/browser/lightning/browser/BrowserActivity.kt b/app/src/main/java/acr/browser/lightning/browser/BrowserActivity.kt
+--- a/app/src/main/java/acr/browser/lightning/browser/BrowserActivity.kt
++++ b/app/src/main/java/acr/browser/lightning/browser/BrowserActivity.kt
+@@
+-        presenter.onDestroy()
++        presenter.onDestroy(isChangingConfigurations)
+
+diff --git a/app/src/main/java/acr/browser/lightning/browser/BrowserPresenter.kt b/app/src/main/java/acr/browser/lightning/browser/BrowserPresenter.kt
+--- a/app/src/main/java/acr/browser/lightning/browser/BrowserPresenter.kt
++++ b/app/src/main/java/acr/browser/lightning/browser/BrowserPresenter.kt
+@@
+ }
+ 
++    /**
++     * Called when the Activity is being destroyed.
++     * Distinguish between:
++     * - real exit (user closes browser)
++     * - configuration change (keyboard disconnect, rotation)
++     */
++    fun onDestroy(isChangingConfigurations: Boolean) {
++        if (isChangingConfigurations) {
++            // 配置变化（键盘断电、旋转）→ 保留所有标签页
++            model.freeze()
++            return
++        }
++
++        // 真正退出浏览器 → 清空标签页
++        model.clean()
++        model.deleteAllTabs().subscribe()
++    }
++

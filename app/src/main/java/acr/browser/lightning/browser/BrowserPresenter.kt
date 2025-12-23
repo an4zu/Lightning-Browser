@@ -134,7 +134,16 @@ class BrowserPresenter @Inject constructor(
             .observeOn(mainScheduler)
             .subscribe { list ->
                 this.view?.updateState(viewState.copy(bookmarks = list, isRootFolder = true))
-            }
+                // onDestroy inserted
+    fun onDestroy(isChangingConfigurations: Boolean) {
+        if (isChangingConfigurations) {
+            model.freeze()
+            return
+        }
+        model.clean()
+        model.deleteAllTabs().subscribe()
+    }
+}
 
         compositeDisposable += model.tabsListChanges()
             .observeOn(mainScheduler)
@@ -1322,4 +1331,13 @@ class BrowserPresenter @Inject constructor(
         tabListState = tabs
         this?.renderTabs(tabListState)
     }
+    fun onDestroy(isChangingConfigurations: Boolean) {
+        if (isChangingConfigurations) {
+            model.freeze()
+            return
+        }
+        model.clean()
+        model.deleteAllTabs().subscribe()
+    }
+
 }
