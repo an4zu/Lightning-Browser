@@ -8,9 +8,9 @@ data class FontConfig(
     val minimumFontSize: Int = 12,
     val textZoom: Int = 100,
     val fontFamily: String = "sans-serif",
-    val fakeBold: Boolean = false,      // 加粗
-    val heavyBold: Boolean = false,     // 加黑（更粗）
-    val enhanceEdges: Boolean = false   // 防毛刺
+    val fakeBold: Boolean = false,      // 加粗（600）
+    val heavyBold: Boolean = false,     // 加黑（900）
+    val enhanceEdges: Boolean = false   // 防毛刺（软件渲染）
 )
 
 object FontEngine {
@@ -44,13 +44,22 @@ object FontEngine {
             .apply()
     }
 
+    fun update(newConfig: FontConfig, context: Context) {
+        config = newConfig
+        save(context)
+    }
+
+    fun current(): FontConfig = config
+
     fun applyToWebView(webView: WebView) {
         val s = webView.settings
 
+        // 字体大小
         s.defaultFontSize = config.fontSize
         s.minimumFontSize = config.minimumFontSize
         s.textZoom = config.textZoom
 
+        // 字体族
         s.standardFontFamily = config.fontFamily
         s.serifFontFamily = config.fontFamily
         s.sansSerifFontFamily = config.fontFamily
@@ -71,16 +80,9 @@ object FontEngine {
             )
         }
 
-        // 防毛刺（抗锯齿）
+        // 防毛刺（软件渲染）
         if (config.enhanceEdges) {
             webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null)
         }
     }
-
-    fun update(newConfig: FontConfig, context: Context) {
-        config = newConfig
-        save(context)
-    }
-
-    fun current(): FontConfig = config
 }

@@ -1,4 +1,8 @@
 package acr.browser.lightning.browser.tab
+import acr.browser.lightning.display.FontEngine
+import acr.browser.lightning.display.ReflowEngine
+import acr.browser.lightning.display.ScrollPrefs
+
 
 import acr.browser.lightning.Capabilities
 import acr.browser.lightning.browser.di.IncognitoMode

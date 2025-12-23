@@ -71,6 +71,9 @@ import acr.browser.lightning.display.ScrollMode
         }
 
         scrollGroup.setOnCheckedChangeListener { _, id ->
+            val newCfg = ScrollPrefs.current().copy(mode = mode)
+            ScrollPrefs.update(newCfg, this@SettingsActivity)
+
             val mode = if (id == R.id.scrollContentRatio)
                 ScrollMode.CONTENT_RATIO else ScrollMode.VIEWPORT_RATIO
             // 保存滚动模式（你可以扩展 ScrollEngine 保存逻辑）
