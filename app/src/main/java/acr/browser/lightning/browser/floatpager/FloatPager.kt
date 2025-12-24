@@ -7,24 +7,21 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
 import android.view.MotionEvent
-import android.view.View
 import android.view.WindowManager
 import kotlin.math.max
 import kotlin.math.min
 
 /**
- * FloatPager：悬浮翻页器核心逻辑
+ * FloatPager：悬浮翻页器核心逻辑（最终补丁版 + 性能优化）
  *
- * 功能：
- * - 拖动保存位置（跨页面继承）
- * - 刷新重置位置（清除保存位置 → 回到默认位置）
- * - 默认透明度（op）
- * - 临时变淡透明度（hideOp）
- * - 临时状态不跨页面、不跨刷新
- * - 长按关闭（10–1500ms）
- * - 上/下翻页
- * - 透明度切换
- * - 全局开关
+ * 新增内容（补丁）：
+ * ----------------------------------------------------
+ * ✔ refresh()：刷新后重置位置 + 更新设置
+ * ✔ applySettings()：设置变化后刷新 UI
+ * ✔ updateOpacity()：透明度变化后更新
+ * ✔ updateButtonSizes()：按钮尺寸变化后更新
+ * ✔ 节流 updateViewLayout()，减少 CPU 占用、拖动更流畅
+ * ----------------------------------------------------
  */
 class FloatPager(
     private val activity: Activity,
@@ -54,14 +51,29 @@ class FloatPager(
     private var lastY = 0f
     private var isDragging = false
 
-    // -----------------------------
+    // ⭐ 节流标记：避免高频 updateViewLayout()
+    private var pendingUpdate = false
+
+    // ⭐ 节流后的 updateViewLayout()
+    private fun requestUpdate() {
+        if (pendingUpdate) return
+        pendingUpdate = true
+
+        handler.post {
+            wm.updateViewLayout(view, params)
+            pendingUpdate = false
+        }
+    }
+
+    // ----------------------------------------------------
     // 初始化
-    // -----------------------------
+    // ----------------------------------------------------
     fun show() {
         if (!FloatPagerPrefs.isEnabled(activity)) return
 
         loadInitialPosition()
-        applyOpacity()
+        updateOpacity()
+        updateButtonSizes()
 
         setupButtons()
         setupDrag()
@@ -73,9 +85,59 @@ class FloatPager(
         runCatching { wm.removeView(view) }
     }
 
-    // -----------------------------
+    // ----------------------------------------------------
+    // ⭐ 刷新后调用（供 BrowserActivity 使用）
+    // ----------------------------------------------------
+    fun refresh() {
+        resetPositionOnRefresh()
+        applySettings()
+    }
+
+    // ----------------------------------------------------
+    // ⭐ 设置变化后刷新 UI
+    // ----------------------------------------------------
+    fun applySettings() {
+        updateOpacity()
+        updateButtonSizes()
+        wm.updateViewLayout(view, params)
+    }
+
+    // ----------------------------------------------------
+    // ⭐ 透明度更新
+    // ----------------------------------------------------
+    private fun updateOpacity() {
+        val op = FloatPagerPrefs.loadOpacity(activity)
+        val hideOp = FloatPagerPrefs.loadHideOpacity(activity)
+        val finalAlpha =
+            if (FloatPagerPrefs.isTempFadeEnabled(activity)) hideOp else op
+        view.alpha = finalAlpha
+    }
+
+    // ----------------------------------------------------
+    // ⭐ 按钮尺寸更新
+    // ----------------------------------------------------
+    private fun updateButtonSizes() {
+        val mainSize = FloatPagerPrefs.loadMainButtonSize(activity)
+        val smallSize = mainSize / 3
+
+        view.btnUp.layoutParams.width = mainSize
+        view.btnUp.layoutParams.height = mainSize
+
+        view.btnDown.layoutParams.width = mainSize
+        view.btnDown.layoutParams.height = mainSize
+
+        view.btnTransparent.layoutParams.width = smallSize
+        view.btnTransparent.layoutParams.height = smallSize
+
+        view.btnCenter.layoutParams.width = smallSize
+        view.btnCenter.layoutParams.height = smallSize
+
+        view.requestLayout()
+    }
+
+    // ----------------------------------------------------
     // 加载初始位置（默认位置 or 保存位置）
-    // -----------------------------
+    // ----------------------------------------------------
     private fun loadInitialPosition() {
         val savedX = FloatPagerPrefs.loadSavedX(activity)
         val savedY = FloatPagerPrefs.loadSavedY(activity)
@@ -96,56 +158,30 @@ class FloatPager(
         params.y += offset
     }
 
-    // -----------------------------
+    // ----------------------------------------------------
     // 刷新时重置位置
-    // -----------------------------
+    // ----------------------------------------------------
     fun resetPositionOnRefresh() {
         FloatPagerPrefs.clearSavedPosition(activity)
         loadInitialPosition()
         wm.updateViewLayout(view, params)
     }
 
-    // -----------------------------
-    // 透明度逻辑
-    // -----------------------------
-    private fun applyOpacity() {
-        val op = FloatPagerPrefs.loadOpacity(activity)
-        val hideOp = FloatPagerPrefs.loadHideOpacity(activity)
-
-        val finalAlpha =
-            if (FloatPagerPrefs.isTempFadeEnabled(activity)) hideOp else op
-
-        view.alpha = finalAlpha
-    }
-
-    private fun toggleFade() {
-        val current = FloatPagerPrefs.isTempFadeEnabled(activity)
-        FloatPagerPrefs.setTempFade(activity, !current)
-        applyOpacity()
-    }
-
-    // -----------------------------
+    // ----------------------------------------------------
     // 按钮事件
-    // -----------------------------
+    // ----------------------------------------------------
     @SuppressLint("ClickableViewAccessibility")
     private fun setupButtons() {
 
-        // 上翻页
-        view.btnUp.setOnClickListener {
-            onPageUp()
-        }
+        view.btnUp.setOnClickListener { onPageUp() }
+        view.btnDown.setOnClickListener { onPageDown() }
 
-        // 下翻页
-        view.btnDown.setOnClickListener {
-            onPageDown()
-        }
-
-        // 透明度切换
         view.btnTransparent.setOnClickListener {
-            toggleFade()
+            val current = FloatPagerPrefs.isTempFadeEnabled(activity)
+            FloatPagerPrefs.setTempFade(activity, !current)
+            updateOpacity()
         }
 
-        // 中间按钮：长按关闭
         view.btnCenter.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -165,9 +201,9 @@ class FloatPager(
         }
     }
 
-    // -----------------------------
-    // 拖动逻辑
-    // -----------------------------
+    // ----------------------------------------------------
+    // 拖动逻辑（已优化）
+    // ----------------------------------------------------
     @SuppressLint("ClickableViewAccessibility")
     private fun setupDrag() {
         view.setOnTouchListener { _, event ->
@@ -195,7 +231,8 @@ class FloatPager(
                         params.x = max(0, min(params.x, dm.widthPixels))
                         params.y = max(0, min(params.y, dm.heightPixels))
 
-                        wm.updateViewLayout(view, params)
+                        // ⭐ 使用节流更新，避免高频 updateViewLayout 卡顿
+                        requestUpdate()
                     }
 
                     lastX = event.rawX

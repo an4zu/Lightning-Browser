@@ -278,6 +278,18 @@ class BrowserPresenter @Inject constructor(
             .subscribeOn(mainScheduler)
             .subscribeBy(onNext = navigator::download)
 
+
+      // ⭐ 页面加载完成 → 刷新 FloatPager
+tabDisposable += tab.pageFinishedObservable
+    .subscribeOn(mainScheduler)
+    .subscribeBy {
+        (view as? BrowserActivity)?.floatPager?.refresh()
+    }
+    
+	
+	
+
+
         tabDisposable += tab.urlChanges()
             .distinctUntilChanged()
             .subscribeOn(mainScheduler)

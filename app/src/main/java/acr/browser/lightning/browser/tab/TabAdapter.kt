@@ -35,7 +35,6 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.Optional
 import java.util.concurrent.TimeUnit
 
-
 /**
  * Creates the adaptation between a [WebView] and the [TabModel] interface used by the browser.
  */
@@ -57,9 +56,16 @@ class TabAdapter @AssistedInject constructor(
     @MainScheduler private val mainScheduler: Scheduler,
 ) : TabModel {
 
+    // ⭐ 页面加载完成事件（供 BrowserActivity 订阅）
+    val pageFinishedObservable = PublishSubject.create<Unit>()
+
+    // ⭐ TabFactory 在页面加载完成时会调用这个方法
+    fun onPageFinished() {
+        pageFinishedObservable.onNext(Unit)
+    }
+
     @AssistedFactory
     interface Factory {
-
         fun create(
             tabInitializer: TabInitializer,
             webView: WebView,
@@ -151,9 +157,7 @@ class TabAdapter @AssistedInject constructor(
             webView.settings.userAgentString = DESKTOP_USER_AGENT
         } else {
             webView.settings.userAgentString = userPreferences.userAgent(defaultUserAgent)
-
         }
-
         toggleDesktop = !toggleDesktop
     }
 
@@ -315,25 +319,17 @@ class TabAdapter @AssistedInject constructor(
         width: Int = view.width,
         height: Int = view.height
     ): Bitmap? {
-        // Ensure the view has been laid out
         if (width == 0 || height == 0) {
             return null
         }
 
-        // Create a Bitmap with the specified dimensions and ARGB_8888 configuration
         val bitmap = createBitmap(width / 3, height / 3)
-
-        // Create a Canvas to draw on the Bitmap
         val canvas = Canvas(bitmap)
 
         canvas.scale(0.33F, 0.33F)
-
         canvas.translate(-webView.scrollX.toFloat(), -webView.scrollY.toFloat())
 
-        // Layout the view if it hasn't been laid out yet
         view.layout(0, 0, width, height)
-
-        // Draw the view onto the canvas
         view.draw(canvas)
 
         return bitmap

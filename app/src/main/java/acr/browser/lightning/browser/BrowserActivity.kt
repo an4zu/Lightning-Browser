@@ -1,5 +1,9 @@
 
 package acr.browser.lightning.browser
+
+import acr.browser.lightning.browser.floatpager.FloatPager
+import acr.browser.lightning.browser.floatpager.FloatPagerPrefs
+
 import acr.browser.lightning.browser.floatpager.FloatPager
 import acr.browser.lightning.AppTheme
 import acr.browser.lightning.R
@@ -85,6 +89,8 @@ import javax.inject.Inject
  * browsers.
  */
 abstract class BrowserActivity : ThemableBrowserActivity() {
+   
+    private var floatPager: FloatPager? = null
 
     private lateinit var binding: ViewDelegate
     private lateinit var tabsAdapter: ListAdapter<TabViewState, TabViewHolder>
@@ -201,6 +207,19 @@ var floatPager: FloatPager? = null
             }
         }
 
+
+// 初始化悬浮翻页器
+floatPager = FloatPager(
+    activity = this,
+    onPageUp = { currentTab?.pageUp() },
+    onPageDown = { currentTab?.pageDown() },
+    onCloseTab = { closeCurrentTab() }
+)
+
+
+
+ 
+ 
         val bottomTabsBinding = if (binding.browserLayoutContainer != null) {
             BrowserBottomTabsBinding.inflate(layoutInflater)
         } else {
@@ -390,11 +409,25 @@ var floatPager: FloatPager? = null
         intent?.let(intentExtractor::extractUrlFromIntent)?.let(presenter::onNewAction)
         super.onNewIntent(intent)
     }
+override fun onDestroy() {
+    super.onDestroy()
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onViewDetached()
+    // ⭐ 防止内存泄漏：销毁悬浮翻页器
+    floatPager?.remove()
+
+    presenter.onViewDetached()
+}
+
+
+override fun onResume() {
+    super.onResume()
+
+    // 显示悬浮翻页器
+    if (FloatPagerPrefs.isEnabled(this)) {
+        floatPager?.show()
     }
+}
+
 
     override fun onPause() {
     // 在 super.onPause() 之前记录键盘状态，避免生命周期后视图度量发生变化

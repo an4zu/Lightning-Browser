@@ -47,18 +47,31 @@ class TabFactory @Inject constructor(
             .subscribeOn(diskScheduler)
             .observeOn(mainScheduler)
             .map { (faviconHandler, htmlHandler) ->
+
                 val headers = webViewFactory.createRequestHeaders()
-                tabAdapterFactory.create(
+
+                // ⭐ 创建 WebViewClient
+                val webViewClient = tabWebViewClientFactory.create(
+                    headers,
+                    faviconHandler,
+                    htmlHandler
+                )
+
+                // ⭐ 创建 TabModel
+                val tabModel = tabAdapterFactory.create(
                     tabInitializer = tabInitializer,
                     webView = webView,
                     requestHeaders = headers,
-                    tabWebViewClient = tabWebViewClientFactory.create(
-                        headers,
-                        faviconHandler,
-                        htmlHandler
-                    ),
-                    tabType,
+                    tabWebViewClient = webViewClient,
+                    tabType = tabType,
                 )
+
+                // ⭐ 订阅页面加载完成事件 → 通知 TabModel
+                webViewClient.finishedObservable.subscribe {
+                    tabModel.onPageFinished()
+                }
+
+                tabModel
             }
     }
 }

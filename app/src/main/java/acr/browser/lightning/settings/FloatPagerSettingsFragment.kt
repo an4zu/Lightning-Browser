@@ -18,7 +18,9 @@ class FloatPagerSettingsFragment : PreferenceFragmentCompat() {
 
         val ctx = requireContext()
 
+        // ============================
         // 透明度
+        // ============================
         findPreference<SeekBarPreference>("floatpager_opacity")?.apply {
             value = (FloatPagerPrefs.loadOpacity(ctx) * 100).toInt()
             summary = "当前：${FloatPagerPrefs.loadOpacity(ctx)}"
@@ -42,7 +44,9 @@ class FloatPagerSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        // 主按钮尺寸
+        // ============================
+        // 按钮尺寸
+        // ============================
         findPreference<SeekBarPreference>("floatpager_main_size")?.apply {
             value = FloatPagerPrefs.loadMainButtonSize(ctx)
             summary = "当前：${FloatPagerPrefs.loadMainButtonSize(ctx)} dp"
@@ -54,13 +58,71 @@ class FloatPagerSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        // ============================
+        // 默认位置（补丁新增）
+        // ============================
+
+        // 默认 X
+        findPreference<SeekBarPreference>("floatpager_default_x")?.apply {
+            value = FloatPagerPrefs.loadDefaultX(ctx)
+            summary = "当前：${FloatPagerPrefs.loadDefaultX(ctx)}"
+            setOnPreferenceChangeListener { _, newValue ->
+                val v = newValue as Int
+                FloatPagerPrefs.saveDefaultX(ctx, v)
+                summary = "当前：$v"
+                true
+            }
+        }
+
+        // 默认 Y
+        findPreference<SeekBarPreference>("floatpager_default_y")?.apply {
+            value = FloatPagerPrefs.loadDefaultY(ctx)
+            summary = "当前：${FloatPagerPrefs.loadDefaultY(ctx)}"
+            setOnPreferenceChangeListener { _, newValue ->
+                val v = newValue as Int
+                FloatPagerPrefs.saveDefaultY(ctx, v)
+                summary = "当前：$v"
+                true
+            }
+        }
+
+        // 默认偏移量
+        findPreference<SeekBarPreference>("floatpager_default_offset")?.apply {
+            value = FloatPagerPrefs.loadDefaultOffset(ctx)
+            summary = "当前：${FloatPagerPrefs.loadDefaultOffset(ctx)} dp"
+            setOnPreferenceChangeListener { _, newValue ->
+                val v = newValue as Int
+                FloatPagerPrefs.saveDefaultOffset(ctx, v)
+                summary = "当前：${v} dp"
+                true
+            }
+        }
+
+        // ============================
+        // 长按关闭时间（补丁新增）
+        // ============================
+        findPreference<SeekBarPreference>("floatpager_long_press")?.apply {
+            value = FloatPagerPrefs.loadLongPressDuration(ctx)
+            summary = "当前：${FloatPagerPrefs.loadLongPressDuration(ctx)} ms"
+            setOnPreferenceChangeListener { _, newValue ->
+                val v = newValue as Int
+                FloatPagerPrefs.saveLongPressDuration(ctx, v)
+                summary = "当前：${v} ms"
+                true
+            }
+        }
+
+        // ============================
         // 重置位置
+        // ============================
         findPreference<Preference>("floatpager_reset_position")?.setOnPreferenceClickListener {
             FloatPagerPrefs.clearSavedPosition(ctx)
             true
         }
 
+        // ============================
         // 恢复默认
+        // ============================
         findPreference<Preference>("floatpager_restore_defaults")?.setOnPreferenceClickListener {
             FloatPagerPrefs.setEnabled(ctx, true)
             FloatPagerPrefs.saveOpacity(ctx, 0.4f)
