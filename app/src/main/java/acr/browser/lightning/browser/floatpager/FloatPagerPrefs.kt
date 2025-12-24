@@ -1,4 +1,5 @@
-package acr.browser.lightning.ui.float
+package acr.browser.lightning.browser.floatpager
+
 
 import android.content.Context
 import android.content.SharedPreferences

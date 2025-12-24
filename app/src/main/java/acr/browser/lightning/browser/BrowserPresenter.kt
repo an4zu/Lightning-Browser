@@ -1,5 +1,5 @@
-import acr.browser.lightning.browser.floatpager.FloatPager
 package acr.browser.lightning.browser
+import acr.browser.lightning.browser.floatpager.FloatPager
 
 import acr.browser.lightning.adblock.allowlist.AllowListModel
 import acr.browser.lightning.browser.data.CookieAdministrator

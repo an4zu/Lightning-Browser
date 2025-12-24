@@ -21,7 +21,6 @@ import acr.browser.lightning.log.NoOpLogger
 import acr.browser.lightning.migration.Cleanup
 import acr.browser.lightning.search.suggestions.RequestFactory
 import acr.browser.lightning.utils.FileUtils
-import acr.browser.lightning.utils.ThreadSafeFileProvider
 import android.app.ActivityManager
 import android.app.Application
 import android.app.DownloadManager
@@ -231,32 +230,24 @@ class AppModule {
     ): List<@JvmSuppressWildcards Cleanup.Action> =
         listOf(faviconCleanup, bookmarkCleanup, downloadCleanup, historyCleanup, homeCleanup)
 
+    // -----------------------------
+    // ✔ 已按方案 A 修改为直接返回 File
+    // -----------------------------
+
     @FilesDir
     @Provides
-    fun providesFilesDir(
-        application: Application,
-        threadSafeFileProviderFactory: ThreadSafeFileProvider.Factory
-    ): ThreadSafeFileProvider = threadSafeFileProviderFactory.create {
+    fun providesFilesDir(application: Application): File =
         application.filesDir
-    }
 
     @DataDir
     @Provides
-    fun providesDataDir(
-        application: Application,
-        threadSafeFileProviderFactory: ThreadSafeFileProvider.Factory
-    ): ThreadSafeFileProvider = threadSafeFileProviderFactory.create {
+    fun providesDataDir(application: Application): File =
         application.dataDir
-    }
 
     @CacheDir
     @Provides
-    fun providesCacheDir(
-        application: Application,
-        threadSafeFileProviderFactory: ThreadSafeFileProvider.Factory
-    ): ThreadSafeFileProvider = threadSafeFileProviderFactory.create {
+    fun providesCacheDir(application: Application): File =
         application.cacheDir
-    }
 }
 
 @Qualifier

@@ -1,6 +1,6 @@
-import acr.browser.lightning.browser.floatpager.FloatPager
-package acr.browser.lightning.browser
 
+package acr.browser.lightning.browser
+import acr.browser.lightning.browser.floatpager.FloatPager
 import acr.browser.lightning.AppTheme
 import acr.browser.lightning.R
 import acr.browser.lightning.ThemableBrowserActivity
@@ -104,7 +104,7 @@ abstract class BrowserActivity : ThemableBrowserActivity() {
     private var pendingScroll = -1
 
 // 悬浮翻页器
-private var floatPager: FloatPager? = null
+var floatPager: FloatPager? = null
 
 
     @Suppress("ConvertLambdaToReference")
